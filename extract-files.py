@@ -17,7 +17,12 @@ from extract_utils.main import (
     ExtractUtilsModule,
 )
 
+def blob_fixup_split(ctx: BlobFixupCtx, file, file_path: str, *args, **kwargs):
+    subprocess.run(['split', '--bytes=49M', '-d', file_path, f'{file_path}.part'])
+
 blob_fixups: blob_fixups_user_type = {
+    'product/priv-app/MotCamera4/MotCamera4.apk': blob_fixup()
+        .call(blob_fixup_split),
 }  # fmt: skip
 
 module = ExtractUtilsModule(
